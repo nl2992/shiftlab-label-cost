@@ -4,7 +4,7 @@ Every policy consumes the same ``(l0, l1, u)`` arrays and returns
 ``{"loss","queries","switches","rollbacks","t_prom"}``, each a ``(n,)`` array, exactly as
 ``b1_certified_switching`` produces them. The policy code for P0/P1/P2/P3b is the pinned b1 module
 (commit 041bc26, ``run_policies(..., b2=True)`` and ``simple_out``); P6 is ``b3_real_data.run_p6``.
-Nothing in b1 or b3_real_data is modified.
+The pinned b1 policies and the P6 numerical routine are unchanged.
 
 P1 is the hindsight reference (always deploys the challenger from t=0, one switch): it is a
 non-deployable benchmark, not a competitor. ``VARIANT_META`` records this and the runner copies it

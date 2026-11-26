@@ -4,13 +4,6 @@
       "git_head": "0c09daedc719ddc1b0e92b5d5dec6ebb9b483f42",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "fcf3a0058a3cc481a0b5a89a89229446edf5dec9ba143ee05e3a4c602f8c7e76",
-        "/<local-path>": "3a546964638e031c30c619b33f2b2d724295da80edead210ac1f29639572a164",
-        "/<local-path>": "bced87ae731827501c131592b6d1fb1da5e9408c92193d450c0fef1b4542417b",
-        "/<local-path>": "02c59a22e63dd226297cc39d429fbac5c04cad648d7791834dc8db0fdeabe4a5",
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "ebcc60f69c6b28acf635b9ad9d5292aff57feb144ded0d407c82bd90863ff53b",
@@ -31,19 +24,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather,airlines,bank,elec2,criteo",
-        "--variants",
-        "P0,P1,P2,P3b,P6,PCT,P4ref,P7a,P7b,P7,P7c",
-        "--config",
-        "S0",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -53,9 +33,6 @@
       "git_head": "0c09daedc719ddc1b0e92b5d5dec6ebb9b483f42",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "ebcc60f69c6b28acf635b9ad9d5292aff57feb144ded0d407c82bd90863ff53b",
@@ -76,19 +53,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P0,P1,P2,P3b,P6,PCT,P4ref,P7a,P7b,P7,P7c",
-        "--config",
-        "S2",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -98,9 +62,6 @@
       "git_head": "0c09daedc719ddc1b0e92b5d5dec6ebb9b483f42",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "ebcc60f69c6b28acf635b9ad9d5292aff57feb144ded0d407c82bd90863ff53b",
@@ -121,19 +82,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P0,P1,P2,P3b,P6,PCT,P4ref,P7a,P7b,P7,P7c",
-        "--config",
-        "S4",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -143,13 +91,6 @@
       "git_head": "82702e1744996572e19b09e0e0273202268eb29c",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "fcf3a0058a3cc481a0b5a89a89229446edf5dec9ba143ee05e3a4c602f8c7e76",
-        "/<local-path>": "3a546964638e031c30c619b33f2b2d724295da80edead210ac1f29639572a164",
-        "/<local-path>": "bced87ae731827501c131592b6d1fb1da5e9408c92193d450c0fef1b4542417b",
-        "/<local-path>": "02c59a22e63dd226297cc39d429fbac5c04cad648d7791834dc8db0fdeabe4a5",
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "d9b540d98ee2b157df0fa6d9c7a131e0b893325e686bc8bc4aeb2922906dcb02",
@@ -170,19 +111,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather,airlines,bank,elec2,criteo",
-        "--variants",
-        "P0,P1,P2,P3b,P6,PCT,P4ref,P7a,P7b,P7,P7c",
-        "--config",
-        "S1",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -192,9 +120,6 @@
       "git_head": "82702e1744996572e19b09e0e0273202268eb29c",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "2996286cc36a4863abb892263d1bca6afd4e54a2d98350b1ab13230f7a0a2d48",
@@ -215,20 +140,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s,P7sp",
-        "--config",
-        "S0",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -238,9 +149,6 @@
       "git_head": "82702e1744996572e19b09e0e0273202268eb29c",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "2996286cc36a4863abb892263d1bca6afd4e54a2d98350b1ab13230f7a0a2d48",
@@ -261,20 +169,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s,P7sp",
-        "--config",
-        "S2",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -284,9 +178,6 @@
       "git_head": "82702e1744996572e19b09e0e0273202268eb29c",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "2996286cc36a4863abb892263d1bca6afd4e54a2d98350b1ab13230f7a0a2d48",
@@ -307,20 +198,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s,P7sp",
-        "--config",
-        "S4",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -330,13 +207,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "fcf3a0058a3cc481a0b5a89a89229446edf5dec9ba143ee05e3a4c602f8c7e76",
-        "/<local-path>": "3a546964638e031c30c619b33f2b2d724295da80edead210ac1f29639572a164",
-        "/<local-path>": "bced87ae731827501c131592b6d1fb1da5e9408c92193d450c0fef1b4542417b",
-        "/<local-path>": "02c59a22e63dd226297cc39d429fbac5c04cad648d7791834dc8db0fdeabe4a5",
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "2996286cc36a4863abb892263d1bca6afd4e54a2d98350b1ab13230f7a0a2d48",
@@ -357,19 +227,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather,airlines,bank,elec2,criteo",
-        "--variants",
-        "P0,P1,P2,P3b,P6,PCT,P4ref,P7a,P7b,P7,P7c",
-        "--config",
-        "S3",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -379,10 +236,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "fcf3a0058a3cc481a0b5a89a89229446edf5dec9ba143ee05e3a4c602f8c7e76",
-        "/<local-path>": "3a546964638e031c30c619b33f2b2d724295da80edead210ac1f29639572a164",
-        "/<local-path>": "bced87ae731827501c131592b6d1fb1da5e9408c92193d450c0fef1b4542417b",
-        "/<local-path>": "02c59a22e63dd226297cc39d429fbac5c04cad648d7791834dc8db0fdeabe4a5",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "2996286cc36a4863abb892263d1bca6afd4e54a2d98350b1ab13230f7a0a2d48",
@@ -403,20 +256,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "airlines,bank,elec2,criteo",
-        "--variants",
-        "P3b,P7s,P7sp",
-        "--config",
-        "S0",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -426,10 +265,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "fcf3a0058a3cc481a0b5a89a89229446edf5dec9ba143ee05e3a4c602f8c7e76",
-        "/<local-path>": "3a546964638e031c30c619b33f2b2d724295da80edead210ac1f29639572a164",
-        "/<local-path>": "bced87ae731827501c131592b6d1fb1da5e9408c92193d450c0fef1b4542417b",
-        "/<local-path>": "02c59a22e63dd226297cc39d429fbac5c04cad648d7791834dc8db0fdeabe4a5",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "33bd3c7abd5dbc296b79bfc91de5501eda392fecf5e433e5a9e2b4cea43375a6",
@@ -450,20 +285,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "airlines,bank,elec2,criteo",
-        "--variants",
-        "P3b,P7s,P7sp",
-        "--config",
-        "S2",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -473,9 +294,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -496,20 +314,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s",
-        "--config",
-        "S0",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -519,9 +323,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -542,20 +343,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s",
-        "--config",
-        "S2",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -565,9 +352,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -588,19 +372,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P0,P1,P2,P3b,P6,PCT,P4ref,P7a,P7b,P7,P7c",
-        "--config",
-        "S0",
-        "--horizon",
-        "1000",
-        "--n-seeds",
-        "100"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -610,9 +381,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -633,20 +401,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s",
-        "--config",
-        "S4",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -656,10 +410,6 @@
       "git_head": "11b5e7ba35fd337fa699e462cc9e8608af340b17",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "fcf3a0058a3cc481a0b5a89a89229446edf5dec9ba143ee05e3a4c602f8c7e76",
-        "/<local-path>": "3a546964638e031c30c619b33f2b2d724295da80edead210ac1f29639572a164",
-        "/<local-path>": "bced87ae731827501c131592b6d1fb1da5e9408c92193d450c0fef1b4542417b",
-        "/<local-path>": "02c59a22e63dd226297cc39d429fbac5c04cad648d7791834dc8db0fdeabe4a5",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -680,20 +430,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "airlines,bank,elec2,criteo",
-        "--variants",
-        "P3b,P7s,P7sp",
-        "--config",
-        "S4",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -703,9 +439,6 @@
       "git_head": "99033cb93176c68c060dd4c107e7a034c92177bc",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -726,20 +459,6 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s",
-        "--config",
-        "S1",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
@@ -749,9 +468,6 @@
       "git_head": "99033cb93176c68c060dd4c107e7a034c92177bc",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -772,24 +488,11 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P7s",
-        "--config",
-        "S3",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--resume"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
       "utc": "2026-11-03T00:57:52.082685+00:00"
     }
-  ]
+  ],
+  "scope_note": "Policy/version provenance. The real-dataset configuration defines the current replay inputs."
 }

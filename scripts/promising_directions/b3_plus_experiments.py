@@ -43,7 +43,7 @@ except ImportError:  # pragma: no cover - depends on file presence
 
 ROOT = base.ROOT
 b1 = base.b1
-CACHE = ROOT / "docs/promising_directions/results/b3/losses"
+from real_datasets import LOSSES as CACHE, STREAMS as STREAMS_ALL
 DEFAULT_OUT = ROOT / "docs/promising_directions/results/b3_plus"
 SEED_BASE = 20261101
 T_FULL = 2000
@@ -75,7 +75,6 @@ ALL_VARIANTS = (
     "P7s",
     "P7sp",
 )
-STREAMS_ALL = ("spam", "rialto", "weather", "airlines", "bank", "elec2", "criteo")
 # Phase 3.1 table: budget at T=2000, cs, cq, delay multiplier (None = protocol delay), alt pair.
 CONFIGS = {
     "S0": {"budget": 200, "cs": 5.0, "cq": 0.05, "delay_mult": 1, "alt": False},
@@ -145,7 +144,7 @@ def row_key(r: dict) -> tuple:
 
 
 # ----------------------------------------------------------------------------- data
-def load_stream(data_root: Path, stream: str, alt: bool):
+def load_stream(data_root: Path, stream: str, alt: bool, require_base_err: bool = True):
     """Return (starts, l0, l1, base_err, files_read). Exits with a clear message if unavailable."""
     path = data_root / "alt" / f"{stream}.npz" if alt else data_root / f"{stream}.npz"
     if not path.exists():
@@ -165,14 +164,27 @@ def load_stream(data_root: Path, stream: str, alt: bool):
             )
         base_err = float(z["base_err"])
     else:
-        pc = data_root.parent / "pairs_check.json"
-        if not pc.exists():
+        pc = ROOT / "docs/promising_directions/results/b3/pairs_check.json"
+        if "inc_err" in z.files:
+            base_err = float(z["inc_err"])
+        elif not require_base_err:
+            base_err = None
+        elif not pc.exists() or stream not in json.loads(pc.read_text()):
             raise SystemExit(
                 f"need {pc} (dev-window incumbent error recorded by B3) for P2's nominal"
             )
-        base_err = float(json.loads(pc.read_text())[stream]["run"]["audit"]["inc_err"])
-        files.append(pc)
-    return z["starts"], z["l0"], z["l1"], base_err, files
+        else:
+            base_err = float(json.loads(pc.read_text())[stream]["run"]["audit"]["inc_err"])
+            files.append(pc)
+    if "starts" in z.files:
+        starts = z["starts"]
+    else:
+        records = ROOT / "docs/promising_directions/results/b3_plus/screening" / stream / "episodes.jsonl"
+        if not records.exists():
+            raise SystemExit(f"no recorded episode offsets for {stream}")
+        offsets = {r["episode"]: r["start"] for r in read_rows(records)}
+        starts = np.array([offsets[i] for i in range(len(z["l0"]))])
+    return starts, z["l0"], z["l1"], base_err, files
 
 
 def slices(starts, l0, l1, horizon: int):
@@ -285,11 +297,11 @@ def parse_args(argv=None):
         help="dir of cached {stream}.npz losses (alt pairs in alt/)",
     )
     ap.add_argument(
-        "--streams", default="spam,rialto,weather", help=f"comma list from {','.join(STREAMS_ALL)}"
+        "--streams", default=",".join(STREAMS_ALL), help=f"comma list from {','.join(STREAMS_ALL)}"
     )
     ap.add_argument(
         "--variants",
-        default=",".join(ALL_VARIANTS),
+        default="P0,P3b,P6,P7s",
         help=f"comma list; known: {','.join(BASE_VARIANTS + PLUS_VARIANTS)}",
     )
     ap.add_argument(
@@ -337,7 +349,9 @@ def main(argv=None) -> None:
     for stream in streams:
         for cname in configs:
             cfg = CONFIGS[cname]
-            starts, L0, L1, base_err, files = load_stream(a.data_root, stream, cfg["alt"])
+            starts, L0, L1, base_err, files = load_stream(
+                a.data_root, stream, cfg["alt"], require_base_err="P2" in variants
+            )
             files_read.update(files)
             delay = base.STREAM_DELAYS[stream] * cfg["delay_mult"]
             budget = cfg["budget"] * a.horizon // T_FULL
@@ -355,7 +369,8 @@ def main(argv=None) -> None:
                 raise SystemExit(
                     f"{jsonl} exists; pass --resume to continue it or choose another --out"
                 )
-            p = b1.Params(T=a.horizon, delay=delay, base_err=base_err, eps=0.05)
+            params_extra = {"base_err": base_err} if base_err is not None else {}
+            p = b1.Params(T=a.horizon, delay=delay, eps=0.05, **params_extra)
             items = list(slices(starts, L0, L1, a.horizon))
             if a.max_episodes is not None:
                 items = items[: a.max_episodes * (T_FULL // a.horizon)]

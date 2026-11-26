@@ -4,9 +4,6 @@
       "git_head": "69322b1fd946614d8e93688fc0a51c8a84b509c2",
       "git_dirty": true,
       "losses_files_sha256": {
-        "/<local-path>": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11",
-        "/<local-path>": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46",
-        "/<local-path>": "d06e40a08902209ff48a3850c0d81b3b80ed85caba75670e90ff365d27e388d4",
         "/<local-path>": "60ab1f5980d69160711d09751876753c40eaec71656f2b9535229a1a1a8726e5"
       },
       "b3_plus_policy_sha256": "1d0569f38126edf46c9c497fada488ce24c09c61cf815562bbbb845fdb4bbb9f",
@@ -27,25 +24,11 @@
         "pandas": "3.0.6",
         "scikit-learn": "1.9.1"
       },
-      "argv": [
-        "scripts/promising_directions/b3_plus_experiments.py",
-        "--streams",
-        "spam,rialto,weather",
-        "--variants",
-        "P3b,P4ref,P7a,P7b,P7s",
-        "--config",
-        "S0",
-        "--horizon",
-        "2000",
-        "--n-seeds",
-        "100",
-        "--out",
-        "docs/promising_directions/results/b3_plus/ablation"
-      ],
       "seed_base": 20261101,
       "n_seeds": 100,
       "p1_note": "P1 is a hindsight reference, not a deployable policy",
       "utc": "2026-11-03T04:00:30.505453+00:00"
     }
-  ]
+  ],
+  "scope_note": "Policy/version provenance. The real-dataset configuration defines the current replay inputs."
 }

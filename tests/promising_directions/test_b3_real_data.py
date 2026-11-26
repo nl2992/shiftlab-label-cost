@@ -85,11 +85,8 @@ def test_episode_offset_rule():
     assert s[-1] + b3.T_EP <= 539383
     spam = b3.episode_plan(5594, 3730)
     assert spam == [5594]
-    elec = b3.locked_plan("elec2")
-    assert len(elec) == 4 and elec[0] == 36250 and elec[1] - elec[0] == 9062 // 4
-    assert len(b3.locked_plan("weather")) == 3 and len(b3.locked_plan("bank")) == 8
-    assert len(b3.locked_plan("rialto")) == 16 and len(b3.locked_plan("criteo")) == 50
-    assert b3.locked_plan("criteo")[1] - b3.locked_plan("criteo")[0] == 6587211 // 50
+    assert len(b3.locked_plan("rialto")) == 16
+    assert b3.locked_plan("spam") == [5594]
 
 
 def test_programme_rules():

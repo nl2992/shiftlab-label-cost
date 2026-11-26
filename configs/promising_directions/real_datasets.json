@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "datasets": {
+    "rialto": {
+      "delay": 100,
+      "source": "shift-paper3-f3/atlas_v2_losses",
+      "sha256": "92f4cc16aa2168aea1e34952bc9f5ed208bd7dabc32728dcb28f2eb1ca69ba11"
+    },
+    "metro": {
+      "delay": 24,
+      "source": "shift-paper3-f3/sprint_fresh_losses",
+      "sha256": "d2e44130d052f1e73a38c6e2b8d731d1c9bef5b955b0447c14c1a5998788bdb1"
+    },
+    "spam": {
+      "delay": 50,
+      "source": "shift-paper3-f3/atlas_v2_losses",
+      "sha256": "aebede86f8e5135c45b3694874e01796710b7b714cebaf47ffc79e08bda7ea46"
+    },
+    "air_quality_co": {
+      "delay": 24,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "c28ff7ee15bd66f14d15e72b4475792f54a8758a380e39dd3e2a424fb638088a"
+    },
+    "bike_hour": {
+      "delay": 24,
+      "source": "shift-paper3-f3/sprint_fresh_losses",
+      "sha256": "6572177367e66927859e6a64e189ae41402bdc262d96f480490977f87c73fb66"
+    },
+    "elec_MT_010": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "ea59698bef76b441b197dc3d91c9c814db1bdb33475f0b92d7e4b3738baab6e4"
+    },
+    "air_Tiantan": {
+      "delay": 24,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "2a77ff3a2ad1dbf571cf39261c5a061222dbd700c1df115c66d1f5d1c9ab134e"
+    },
+    "air_Dingling": {
+      "delay": 24,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "6e9069e4f71c3399937727cc679da3133037361298cd6cc31ade8c7f73d000ad"
+    },
+    "elec_MT_022": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "1669d1a42767359bfa84ecae7f1fa0f52610f64d32040f39a75af8dc9b2335f0"
+    },
+    "air_Dongsi": {
+      "delay": 24,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "7f5ad07fbaab7ffab4956898bb96d3c270c2045b7f1787778f888bbb234fe1c7"
+    },
+    "elec_MT_002": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "880d3db8280bc852469e64847e1c4ce63aa1a6c4cfbd6c5fa8959df1b4580eec"
+    },
+    "openml_ldpa": {
+      "delay": 100,
+      "source": "shift-paper3-f3/atlas_v2_losses",
+      "sha256": "016bf919209d8081ff1608eadc28ee470609d8c6b56a3bf24c767e5f057dd1e2"
+    },
+    "air_Wanliu": {
+      "delay": 24,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "0b196e9b721737c5aeb600d9a89ad5daae3f55a33780792983b93d2923566935"
+    },
+    "air_Shunyi": {
+      "delay": 24,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "ff3dd1c4cb127acea4a7f014ab90a477c5086082d91aa4f969d2f425cab360f5"
+    },
+    "elec_MT_011": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "8a569f572c21d0f2c5edb3780cdedeb1d9b3071fd82fdbad66fbe147f3719430"
+    },
+    "elec_MT_014": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "f3e90e3edf70936919cf03844aba55aceac1d1a7445004afafa9ba4ea35d9e7b"
+    },
+    "elec_MT_043": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "3e207e8cb248f63ba56b995e062add97435e156e492cf5b4438069028889c97a"
+    },
+    "elec_MT_027": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "0c43de722d588fb4e1996126e93af1a8a08861bb0e2a05c2e3c80dc3ed8c1b2d"
+    },
+    "elec_MT_009": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "64f79b22274cf4d26496017f4c06e668d88c26bda4b2dd1c1ebd0e97ba7d14e1"
+    },
+    "elec_MT_041": {
+      "delay": 96,
+      "source": "shift-paper3-f3/screen100_losses",
+      "sha256": "5440aa91aa1621defca2a96eb8c9f3b011063f78787bd816324e36c024813e49"
+    }
+  }
+}

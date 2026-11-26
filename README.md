@@ -1,20 +1,10 @@
 # What Does It Cost to Keep a Certificate? Settled-Decision Label Acquisition
 
-Anytime-valid procedures certify a model swap, but they pay for the certificate in labels, and under a hard label budget that price is a first-order cost. A disagreement-gated paired e-process keeps buying labels at its budget-paced rate long after the deployment decision is settled. Settled-decision acquisition withholds queries in the two states where no label can change the deployed action, so it can only spend less. The repository holds the method, baselines, five real case studies selected from 36 screened datasets, ablations and the manuscript.
+Settled-decision acquisition reduces label spending by attenuating queries after a deployment decision settles. This repository evaluates the method on **20 real datasets and 307 episodes**, with frozen model-pair losses and 100 paired query seeds per episode.
 
-**Status.** Manuscript draft.
+Across the 20 datasets, mean savings relative to P3b are **1.43% in net cost and 37% in labels**; the corresponding medians are **0.95% and 30%**. Each dataset has equal weight.
 
-## Layout
-
-- `paper/`: manuscript sources
-- `docs/`: protocols, results and notes
-- `src/shiftlab/`: implementation
-- `scripts/`: experiment, analysis and audit scripts
-- `tests/`: unit and regression tests
-- `configs/`: experiment configuration
-- `research/`: dataset discovery
-
-The manuscript sources are in `paper/b3_plus`. The main implementation is `scripts/promising_directions`; scripts are under `scripts/promising_directions`. The dataset screening pipeline is in `research/b3_plus/dataset_discovery/`; results and protocols are in `docs/promising_directions/`.
+The authoritative dataset list, delays and loss checksums are in `configs/promising_directions/real_datasets.json`. Primary results and frozen replay inputs are in `docs/promising_directions/results/b3_plus/all_streams/`. The manuscript is in `paper/b3_plus/`, and the implementation and tests are in `scripts/promising_directions/` and `tests/`.
 
 ## Setup
 
@@ -24,11 +14,22 @@ pip install -e ".[dev]"
 pytest -q
 ```
 
-Large raw data and run outputs are not tracked. Scripts regenerate them, and each protocol or results note under `docs/` states the seeds and commands it used.
+## Reproduce results
 
-## Related repositories
+Rebuild the manuscript tables, figures and results report from saved episode records:
 
-The Python package `shiftlab` started as one shared codebase and is now split by paper. Each repository carries the part of it that the paper needs.
+```bash
+python paper/b3_plus/figures/make_all_streams.py
+```
+
+Rerun all primary policies on the 20 checksum-verified loss caches:
+
+```bash
+python scripts/promising_directions/b3_plus_all_streams.py --workers 7
+python paper/b3_plus/figures/make_all_streams.py
+```
+
+See `docs/promising_directions/B3_PLUS_PROTOCOL.md` for configuration and aggregation, `docs/promising_directions/B3_PLUS_RESULTS.md` for results, and `paper/b3_plus/BUILD.md` to build the paper. Detailed ablation records cover two retained streams; sensitivity records cover three. Synthetic theory experiments remain separate from the real-data evaluation.
 
 ## License
 

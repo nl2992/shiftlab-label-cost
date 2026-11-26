@@ -44,7 +44,7 @@ has almost nothing to recover, and its side effect dominates.
 
 ## Honest statement of what remains true
 
-- Settled-decision acquisition does beat P3b, reproducibly, on five datasets.
+- Settled-decision acquisition does beat P3b, reproducibly, on 19 of the 20 real datasets.
 - P3b is not the strongest available method for this task. Gated deployment is cheaper on both
   powered datasets by a wide margin (94.7 vs 103.7 on rialto under our accounting).
 - Therefore the B3+ result, while correct, is a comparison against a weak baseline, and should

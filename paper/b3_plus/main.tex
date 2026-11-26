@@ -1,89 +1,101 @@
-% ICML 2026 submission. Style files (icml2026.sty/.bst, algorithm, algorithmic, fancyhdr) are
-% the official ones from media.icml.cc. Every number is produced from saved per-episode records
-% by the generators in paper/b3_plus/tables/; no value is hand-entered.
-\documentclass{article}
-\usepackage{microtype,graphicx,booktabs,hyperref,amsmath,amssymb,amsfonts}
+% TMLR submission, anonymous form. Use \usepackage[preprint]{tmlr} or [accepted] to reveal authors.
+% Tables in tables/ hold values taken from the per-episode records in docs/promising_directions/results/.
+\documentclass[10pt]{article}
+\usepackage{tmlr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype,graphicx,booktabs,url,amsmath,amssymb,amsfonts}
 \usepackage{algorithm}
+\let\AND\relax
 \usepackage{algorithmic}
-\usepackage{icml2026}  % anonymous submission; add [accepted] only for camera-ready
+\usepackage{longtable}
+\input{tables/numbers_all}
 
-\icmltitlerunning{Label-Efficient Sequential Certification for Model Switching}
+\title{What Does It Cost to Keep a Certificate? Label-Efficient Sequential Certification for Model
+Switching under Budgeted and Delayed Feedback}
+
+\author{\name Anonymous Authors \email anonymous@example.com \\
+      \addr Anonymous Institution}
+
+\def\month{MM}
+\def\year{YYYY}
+\def\openreview{\url{https://openreview.net/forum?id=XXXX}}
 
 \begin{document}
-\twocolumn[
-\icmltitle{What Does It Cost to Keep a Certificate?\\
-Label-Efficient Sequential Certification for Model Switching\\
-under Budgeted and Delayed Feedback}
-\icmlsetsymbol{equal}{*}
-\begin{icmlauthorlist}
-\icmlauthor{Anonymous Authors}{anon}
-\end{icmlauthorlist}
-\icmlaffiliation{anon}{Anonymous Institution}
-\icmlcorrespondingauthor{Anonymous Authors}{anon@example.com}
-\icmlkeywords{sequential testing, e-processes, model selection, active learning}
-\vskip 0.3in
-]
-\printAffiliationsAndNotice{}
+\maketitle
 
 \begin{abstract}
-Deciding whether to replace a deployed model with a challenger requires paying for labels,
-waiting for feedback, and absorbing a switching cost. Anytime-valid procedures answer this with a
-sequential certificate, but they pay for that certificate in labels, and under a hard label budget
-that price is itself a first-order cost. We show that a standard disagreement-gated paired
-e-process keeps buying labels at its budget-paced rate long after the deployment decision is
-settled: on one stream it promotes the challenger at event~244 and then purchases labels for the
-remaining 1756 events. Removing that spend is not trivial, because rollback must stay detectable.
-We introduce \emph{settled-decision acquisition}, which withholds queries in the two states where
-no label can change the deployed action while leaving pacing otherwise untouched, so it can only
-ever spend less. On four of five real-world case studies, selected from 36 screened datasets, the
-resulting policy reproduces the incumbent procedure's deployment decisions \emph{event for event}
-while using 20--67\% fewer labels; on the fifth it alters behaviour and still improves on average.
-The effect is invariant to the switching cost and exactly proportional to the label price, as a
-pure label-saving mechanism must be, and it fails that scaling law on precisely the one dataset
-where deployment behaviour changes. We do not claim better switching decisions: on one of our five
-cases a fixed-sample binomial test remains the cheaper policy overall, and we report it alongside.
+Replacing a deployed model requires labels, delayed feedback, and a switching cost.
+Sequential certificates support promotion as soon as the evidence is sufficient, but their
+acquisition rules may keep buying labels after the deployment decision has settled. In one
+\texttt{spam} episode, the incumbent certified procedure promotes the challenger at event~244
+and continues querying over the remaining 1756 events. We propose \emph{settled-decision
+acquisition}, which reduces querying when the challenger is certified worse or is already
+deployed and remains ahead. The evidence update, promotion threshold, and rollback test are
+unchanged, and a positive query floor preserves monitoring. Across \NStreams{} real datasets
+and \NEpisodes{} episodes, the method saves \MeanCostChange\% in net cost and uses
+\MeanSaving\% fewer labels on average relative to the incumbent certified procedure; the
+corresponding medians are \MedCostChange\% and \MedSaving\%. These are arithmetic means
+of dataset-level percentage reductions, with equal weight per dataset. Net cost is lower on
+\NCheaper{} datasets, equal on \NEqual{}, and higher on \NDearer{}. Deployment loss, switch
+counts, and rollback counts match on every query seed in \NSameEpisodes{} episodes. The
+benefit is lower certificate-acquisition cost: a fixed-sample binomial test is cheaper than our
+method on \NSixCheaper{} datasets.
 \end{abstract}
 
 \section{Introduction}
-A challenger model may be better than the incumbent in production, but acting on that possibility
-is expensive. Labels must be purchased, feedback arrives late, and every switch of the deployed
-model costs something. The natural tool is a sequential test that is valid at every stopping time,
-so that promotion can happen as soon as the evidence warrants it.
+Replacing a deployed model with a challenger requires more than comparing their prediction
+errors. Labels must be purchased, feedback arrives late, and each deployment switch incurs a
+cost. A sequential certificate allows promotion as soon as enough evidence has arrived, while
+a hard label budget limits how much evidence the procedure can buy.
 
-Our starting point is an observation about what such a procedure spends. Optional stopping is
-bought with labels, and the procedure keeps buying them for the whole episode. Once the challenger
-has been promoted and continues to look better, however, the deployed action is not in question;
-further labels buy only rollback insurance. Measured on real streams, this is where most of the
-budget goes.
+The acquisition rule can continue spending long after that certificate has changed the deployed
+action. In the \texttt{spam} example in Figure~\ref{fig:method}, promotion occurs at event~244,
+yet the incumbent procedure continues querying until the end of the 2000-event episode. Once
+the challenger is deployed and remains ahead, those labels mainly provide rollback monitoring.
+Reducing this spend requires retaining a way to detect a reversal.
+
+We address that acquisition decision with \emph{settled-decision acquisition}. The rule
+attenuates the paced query probability in two states: before promotion when the challenger is
+certified worse, and after promotion when the recent paired advantage still favours it. A
+positive query floor retains monitoring. The evidence process, its propensity-matched bet cap,
+and the promotion and rollback tests remain unchanged. The rule therefore changes the cost of
+acquiring a certificate while preserving the underlying decision procedure.
+
+Across \NStreams{} real datasets, this change saves \MeanCostChange\% in net cost and uses
+\MeanSaving\% fewer labels on average relative to the incumbent certified procedure. The
+corresponding medians are \MedCostChange\% and \MedSaving\%. Each dataset contributes
+equally to these summaries. Net cost falls on \NCheaper{} datasets and rises on \NDearer{};
+the comparison with a fixed-sample test and the per-stream decomposition establish the scope
+of the result.
 
 \paragraph{Contributions.}
 \begin{itemize}
   \item We identify and quantify post-decision certificate spend in a disagreement-gated paired
   e-process, from saved per-episode records (Section~\ref{sec:method}).
   \item We propose settled-decision acquisition (Section~\ref{sec:method}), which gates querying
-  on whether a label could still change the deployed action. The evidence process, its
+  on whether a label is expected to change the deployed action. The evidence process, its
   propensity-matched bet cap, the promotion threshold and the rollback test are unchanged.
-  \item We evaluate on five real-world case studies and attribute the effect by ablation
-  (Sections~\ref{sec:results}--\ref{sec:ablation}).
-  \item We state a falsifiable scaling law the mechanism must satisfy, and show it holds on four
-  cases and breaks on exactly the fifth, where its premise is independently violated
-  (Section~\ref{sec:ablation}).
+  \item We evaluate on \NStreams{} real loss streams (Section~\ref{sec:allstreams}), report
+  average savings of \MeanCostChange\% in net cost and \MeanSaving\% in labels, and attribute
+  the effect by ablation on two streams (Sections~\ref{sec:results}--\ref{sec:ablation}).
+  \item We check a falsifiable scaling law on the streams with sensitivity measurements:
+  cost differences from label savings alone are invariant to switching cost and proportional to
+  label price; changes in deployment can break that law (Section~\ref{sec:ablation}).
 \end{itemize}
 
 \section{Related Work}
-Contextual active model selection~\cite{liu2024cams} queries on a disagreement score and optimises
+Contextual active model selection~\citep{liu2024cams} queries on a disagreement score and optimises
 regret with the label budget as a hard constraint. It models no switching cost, does not use the
 remaining horizon, does not address delay, and never commits to a deployed model, so it has no
 notion of promotion or its price. Active, anytime-valid risk-controlling prediction
-sets~\cite{xu2024active} give the closest treatment of budgeted, e-process-driven labelling: the
+sets~\citep{xu2024active} give the closest treatment of budgeted, e-process-driven labelling: the
 policy maximises a lower bound on e-process log-growth, driven by conditional risk variability
 rather than proximity to a decision boundary, assumes labels are available immediately, and does
 not consider switching between candidate models. Our acquisition rule is in one respect the
 opposite of that objective: it declines to buy evidence once the evidence cannot change the
 action. We additionally compare against a cost-aware promotion rule that gates promotion on a
-lower confidence bound times a declared persistence horizon, reported here as \textsf{P4ref};
-treating such a rule as unrelated prior work rather than as a baseline would overstate our
-novelty, so it appears in the ablation of Table~\ref{tab:ablation}.
+lower confidence bound times a declared persistence horizon, reported here as \textsf{P4ref} in
+Table~\ref{tab:ablation}.
 
 \section{Problem Formulation}
 A chronological stream of $T$ events. A frozen incumbent $f_0$ and challenger $f_1$ produce $0/1$
@@ -102,25 +114,24 @@ time. \textbf{Decide}: promote when $\log W_t\ge\log(1/\alpha)$, roll back by th
 effective from $t+1$. Figure~\ref{fig:method} shows the loop and Algorithm~\ref{alg:main} states
 it; the objective throughout is the realised net cost of Eq.~\eqref{eq:netcost}.
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
 \centering
-\includegraphics[width=\textwidth]{figures/fig1_method.png}
-\caption{Acquisition is withheld only where no label can change the deployed action. Each event
-passes through issue, release and decide; the issue stage sees only information released before
-$t-d$, and the decision takes effect at $t+1$. In the \textsc{hopeless} and \textsc{settled}
-states the query rate falls to a quarter rate and to the propensity floor respectively, while the
-evidence process and promotion rule are unchanged.}
+\includegraphics[width=\linewidth]{figures/fig1_method.pdf}
+\caption{The \texttt{spam} running example uses 67 labels instead of 200 after the same
+promotion decision. (a) Cumulative requested labels at 100-event intervals, averaged over 100 paired query seeds;
+the vertical line marks mean promotion at event~244. (b) The issue--release--decide loop.
+(c) State-dependent acquisition multipliers; the positive propensity floor applies in all states.}
 \label{fig:method}
-\end{figure*}
+\end{figure}
 
 \section{Method}\label{sec:method}
 \paragraph{Where the budget goes.} Under the incumbent procedure, promotion occurs at event $244$
-on \texttt{spam}, $425$ on \texttt{rialto} and $988$ on \texttt{weather}, each at promotion rate
-$1.00$, after which querying continues at the paced rate for the remainder of the episode: $1756$,
-$1575$ and $1012$ further events respectively.
+on \texttt{spam} and $425$ on \texttt{rialto}, each at promotion rate $1.00$, after which
+querying continues at the paced rate for the remaining $1756$ and $1575$ events respectively.
 
-\paragraph{Settled-decision acquisition.} Two states admit no label that could change the deployed
-action: \textsc{hopeless}, not yet promoted with the challenger certified worse; and
+\paragraph{Settled-decision acquisition.} In two states a label is not expected to change the
+deployed action: \textsc{hopeless}, not yet promoted, with the challenger certified worse and the recent discounted
+paired advantage also against it; and
 \textsc{settled}, already promoted with the recent discounted paired advantage still favouring the
 challenger. Writing $r_t$ for a multiplier on the paced rate,
 \begin{equation}\label{eq:rule}
@@ -132,7 +143,9 @@ challenger. Writing $r_t$ for a multiplier on the paced rate,
     1 & \text{else.}
   \end{cases}
 \end{equation}
-Since $r_t\le 1$ the rule can only withhold spend. A settled multiplier of $0$ still queries at
+Since $r_t\le 1$ the gate only attenuates the paced query probability conditional on the same
+state. Subsequent budgets and evidence can differ between policies, so this is not a pathwise
+ordering of total cost. A settled multiplier of $0$ still queries at
 $p_{\min}$ because $q_t$ is clipped there, so positive propensity and rollback monitoring both
 survive. Post-promotion the margin grids are frozen, so the settled test uses the recent
 discounted advantage, which remains defined.
@@ -150,113 +163,170 @@ effective from $t+1$.
 \end{algorithmic}
 \end{algorithm}
 
-\paragraph{What is and is not guaranteed.} The margin-null e-processes have non-negative wealth
-factors under the propensity-matched cap, issued propensities are measurable with respect to
-released information and bounded below by $p_{\min}$, and the budget is pathwise feasible, so the
-certificate is unaffected: acquisition steers spending, not validity. We claim no guarantee about
-rollback latency; reduced post-promotion monitoring detects a reversal later than the incumbent
-would, and we characterise that empirically rather than theoretically.
+\paragraph{Validity.} Acquisition changes which labels are bought, not how evidence is accumulated.
+Wealth factors stay non-negative under the propensity-matched cap, propensities depend only on
+released information and are at least $p_{\min}$, and the budget holds on every path. Rollback after
+promotion rests on the floor-rate queries, so it can be slower than under the incumbent.
 
 \section{Experimental Setup}
-Five real-world streams: \texttt{spam}, \texttt{rialto}, \texttt{weather}, \texttt{openml\_ldpa}
-and \texttt{uci\_occupancy}. Primary configuration $T=2000$, $B=200$, $c_q=0.05$, $c_s=5$, with
-dataset-specific imposed delays declared before any locked window was read, and $100$
-query-randomisation seeds shared across policies so every comparison is paired on episodes and
-seeds. Comparators: $P_0$ never switch; \textsf{P3b} the incumbent certified procedure;
-\textsf{P6} a fixed-sample exact binomial test on released disagreement labels; \textsf{P2}
-incumbent-alarm switching. $P_1$, always deploying the challenger, is a hindsight reference and
-never a deployable baseline. Model pairs are selected on train and development windows only.
+The evaluation contains \NStreams{} real loss streams and \NEpisodes{} episodes: nine electricity
+meters, six air-quality series, two demand and mobility series (\texttt{metro} and
+\texttt{bike\_hour}), and \texttt{rialto}, \texttt{spam} and \texttt{openml\_ldpa}.
+Each stream uses a frozen incumbent--challenger pair and chronological loss windows. For the
+meter, air-quality and demand streams, the incumbent is logistic regression fitted on the first
+15\% of observations and the challenger is a gradient-boosted tree model fitted on the first
+30\%; subsequent windows supply at most 20 episodes per stream. The retained case records for
+\texttt{rialto}, \texttt{spam} and \texttt{openml\_ldpa} contain 16, 1 and 32 episodes respectively.
+Cached per-event losses, fixed delays and their checksums specify the exact replay inputs.
 
-\paragraph{Selection disclosure.} The five cases are a \emph{selected} set. Thirty-six datasets
-were considered, twenty-nine reached a screening verdict, eleven reached locked-window evaluation,
-and five were selected. The datasets named in our pre-registered queue produced no successes; both
-new cases come from candidates added after that queue was exhausted. These figures are not an
-unbiased success rate, and the method was not evaluated only on these five.
+The primary configuration is $T=2000$, $B=200$, $c_q=0.05$, $c_s=5$, with a fixed label delay per
+stream (24, 50, 96 or 100 events), and 100 query-randomisation seeds shared across policies.
+Comparators are $P_0$ (never switch), \textsf{P3b} (incumbent certified switching) and
+\textsf{P6} (a fixed-sample exact binomial test on released disagreement labels). All primary
+comparisons use the same episodes and seeds. Model-pair fitting and selection use training and
+development windows.
+
+\paragraph{Aggregation and uncertainty.}
+Policy costs and label counts are averaged over query seeds, then over episodes within a stream.
+The headline results are arithmetic means of the percentage reduction relative to P3b computed
+separately for each dataset; medians of those same reductions are reported alongside them.
+Both summaries give each dataset equal weight. They are not percentages computed from pooled
+cost or label totals. We report paired
+95\% episode-bootstrap intervals using 10,000 resamples when a stream has at least five episodes.
+The \NLowPower{} shorter streams have no episode-level interval in the appendix. Query seeds
+are repeated randomisations of the same episodes and are not independent data episodes.
+
+\section{All Streams}\label{sec:allstreams}
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig4_all_streams.pdf}
+\caption{Settled-decision acquisition saves \MeanCostChange\% in net cost and
+\MeanSaving\% in labels on average across \NStreams{} datasets. Bars show the arithmetic
+mean and median of dataset-level percentage reductions relative to P3b; hollow points show
+all dataset values. The median savings are \MedCostChange\% and \MedSaving\%, respectively.}
+\label{fig:all}
+\end{figure}
+\begin{table}[!t]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/table4_families}}
+\caption{Results by source family. Cheaper/equal/dearer compares ours with P3b. Matching summaries
+means identical deployment loss, switch count and rollback count on every query seed within an
+episode; these totals alone do not establish identical action trajectories. P6 cheaper counts
+streams where P6 has lower mean cost than ours.}
+\label{tab:families}
+\end{table}
+
+Figure~\ref{fig:all} and Table~\ref{tab:summary} report the headline result: averaged
+equally across \NStreams{} datasets, settled-decision acquisition saved \MeanCostChange\%
+in net cost and used \MeanSaving\% fewer labels than P3b. The corresponding medians were
+\MedCostChange\% and \MedSaving\%. Table~\ref{tab:families} breaks the result down by
+source family. Net cost was lower on \NCheaper{} streams, equal on \NEqual{}, and higher on
+\NDearer{}; label savings reached \MaxSaving\%. Deployment summaries matched on every query
+seed in \NSameEpisodes{} of \NEpisodes{} episodes and in all episodes of \NSameStreams{} streams.
+
+\begin{table}[!t]\centering
+\input{tables/table0_summary}
+\caption{Average savings across all \NStreams{} real datasets, with medians alongside.
+Both statistics summarize dataset-level percentage reductions relative to P3b with equal
+dataset weight.}
+\label{tab:summary}
+\end{table}
+
+\textsf{P6} is cheaper than ours on \NSixCheaper{} streams. P3b beats never switching on
+\NIncBeatNever{} streams, compared with \NBeatNever{} for ours. These comparisons separate label
+efficiency against the incumbent certificate from overall policy performance.
 
 \section{Main Results}\label{sec:results}
-\begin{table*}[!t]\centering\small
-\input{tables/table1_main}
-\caption{Net cost per episode at the primary configuration. $\dagger$ marks cases whose interval
-is a seed-level bootstrap ($K<5$), which measures query-randomisation variance and not episode
-variance. Only \texttt{rialto} and \texttt{openml\_ldpa} are properly powered.}
+\begin{table}[!t]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/table1_main}}
+\caption{Primary results for every real dataset. Net cost and labels are means per episode.
+Positive cost saved means ours is cheaper than P3b. Costs use unrounded records; label counts
+are rounded only for display.}
 \label{tab:main}
-\end{table*}
+\end{table}
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/fig2_netcost.png}
-\caption{The proposed policy is cheapest on four of the five cases, and \textsf{P6} is cheapest on
-\texttt{weather}. Net cost per episode at the primary configuration; lower is better. Starred
-datasets are low-power ($K<5$).}
+\includegraphics[width=\linewidth]{figures/fig2_netcost.pdf}
+\caption{Net cost is \MeanCostChange\% lower on average across \NStreams{} datasets
+(median \MedCostChange\%). Bars show each dataset's percentage reduction relative to P3b;
+negative values indicate increased cost. Dashed and dotted lines mark the mean and median,
+respectively. Episode-bootstrap intervals for cost differences are in Appendix~\ref{app:streams}.}
 \label{fig:netcost}
-\end{figure*}
+\end{figure}
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig3_labels.pdf}
+\caption{Settled-decision acquisition uses \MeanSaving\% fewer labels on average
+(median \MedSaving\%). Bars show the share of P3b's labels saved on each of the \NStreams{}
+datasets. Dashed and dotted lines mark the mean and median, respectively.}
+\label{fig:labels}
+\end{figure}
 
-Table~\ref{tab:main} and Figure~\ref{fig:netcost} report the primary configuration. The method
-improves on the incumbent on all five cases with every confidence interval below zero, and reduces
-labels by 20--67\%. The improvement is not uniform across comparators: on \texttt{weather} the
-fixed-sample test \textsf{P6} remains cheaper than both the incumbent and our method, and
-\textsf{P6} also beats the incumbent on the four streams that failed our selection condition. We
-therefore claim an improvement \emph{on the certified procedure}, in the regime where that family
-is appropriate, and not that our policy is the best available.
+Table~\ref{tab:main} reports all datasets. Figures~\ref{fig:netcost} and \ref{fig:labels}
+show the dataset-level savings together with the headline averages and companion medians.
+The largest percentage savings are on \texttt{rialto}
+(5.12\%), \texttt{metro} (4.45\%) and \texttt{spam} (2.62\%).
+The largest label saving is on \texttt{air\_quality\_co}, from 178 to 45 labels per episode
+(75\%). On \texttt{elec\_MT\_041}, labels fall from 147 to 134 but net cost rises by 0.09\%:
+reduced label spending can be offset by a change in deployment loss or switching.
+Appendix~\ref{app:streams} decomposes each cost difference and reports episode-level intervals.
 
 \section{Mechanism and Ablations}\label{sec:ablation}
-\begin{table*}[!t]\centering\small
-\input{tables/table3_ablation}
-\caption{Ablation at the primary configuration; $\Delta$ is the paired difference against
-\textsf{P3b}. The \textsc{hopeless} gate alone changes nothing on these streams, because it fires
-only when the challenger is certified worse and here it is better. The break-even promotion gate
-and the existing cost-aware rule both \emph{lose}. The entire gain comes from the \textsc{settled}
-state.}
+\begin{table}[!t]\centering\small
+\resizebox{\linewidth}{!}{\input{tables/table3_ablation}}
+\caption{Ablation measurements on \texttt{spam} and \texttt{rialto}; $\Delta$ is the paired cost
+difference against P3b. Both use the primary configuration.}
 \label{tab:ablation}
-\end{table*}
+\end{table}
 
-Table~\ref{tab:ablation} attributes the effect. Three negative results carry the attribution: the
-\textsc{hopeless} gate alone is exactly neutral, a break-even promotion gate costs $+23.79$,
-$+8.97$ and $+17.57$, and the existing cost-aware promotion rule costs far more. Only the
-\textsc{settled} state produces the improvement.
+On these two streams, the \textsc{hopeless} gate alone leaves cost unchanged, while adding the
+\textsc{settled} state reduces query spending (Table~\ref{tab:ablation}). The cost-aware promotion
+rule \textsf{P4ref} is more expensive. For these streams, saved detailed records establish matching
+deployment loss, switches and rollbacks, with the net-cost difference entirely in query cost.
+This attribution is specific to those measurements; the appendix shows the decomposition for
+each of the \NStreams{} streams.
 
-Decomposing the paired difference into deployment loss, query cost and switch cost leaves the
-entire effect in the query term on four of five cases, where deployment loss is bitwise identical
-per episode, promotion times coincide and rollbacks are zero for both policies. The method
-therefore does not improve decisions; it removes waste.
+\paragraph{A falsifiable scaling law.}
+When the entire difference is query spending, it must be invariant to $c_s$ and exactly proportional
+to $c_q$. Both predictions hold to displayed precision on \texttt{spam} and \texttt{rialto}.
+They fail on \texttt{openml\_ldpa}, where deployment behaviour changes. This distinguishes a pure
+label-spend effect from one that also changes deployment.
 
-\paragraph{A falsifiable scaling law.} If the whole gain is $c_qN_q$, the paired difference must be
-invariant to $c_s$ and exactly proportional to $c_q$. Both predictions hold to displayed precision
-on \texttt{spam}, \texttt{rialto}, \texttt{weather} and \texttt{uci\_occupancy}, and both fail on
-\texttt{openml\_ldpa}, the one case where deployment behaviour changes. A fitted effect would not
-reproduce an exact scaling law on four datasets and break on precisely the dataset independently
-shown to violate its premise.
-
-\begin{table}[t]\centering\footnotesize
+\begin{table}[t]\centering\small
 \input{tables/table2_sensitivity}
-\caption{Paired difference by configuration. Dashes mark configurations not run rather than
-interpolated values.}
+\caption{Available sensitivity measurements for three retained streams: paired cost difference
+against P3b. Dashes mark configurations not run. These are not cohort-wide sensitivity estimates.}
 \label{tab:sens}
 \end{table}
 
-Table~\ref{tab:sens} shows the benefit scales with \emph{unspent budget the incumbent would
-otherwise consume}, not with the budget granted: raising $B$ to $400$ doubles to triples the gain
-on three cases but leaves \texttt{rialto} essentially unchanged, because its disagreement rate
-caps queries near $165$ so the larger budget never binds.
+The benefit depends on unspent budget the incumbent would otherwise consume.
+Raising $B$ to $400$ increases the gain on \texttt{spam} and \texttt{openml\_ldpa}, but leaves
+\texttt{rialto} essentially unchanged: its disagreement rate caps queries near $165$, so the
+larger budget does not bind (Table~\ref{tab:sens}).
 
-\section{Discussion and Limitations}
-Three limitations are load-bearing. First, power: three of five cases contribute fewer than five
-episodes, so their intervals are seed-level bootstraps; a second disjoint seed batch reproduces
-every effect to within 1--3\% but does not create episode-level power. Second, the reversal risk:
-reduced post-promotion monitoring detects reversal later, and while \texttt{openml\_ldpa} exercises
-reversal on real data and our method rolls back \emph{less} often there with better mean deployment
-loss, it costs more in 2 of 32 episodes, and we have no real stream where reduced monitoring is
-worse on average. Third, \texttt{openml\_ldpa}'s event order is inferred from undocumented columns
-rather than documented, and its non-stationarity is largely a change of recorded subject between
-blocks rather than drift within one deployment.
+\section{Limitations}
+Streams within a family are correlated, so stream counts are descriptive rather than independent
+trials. \NLowPower{} streams contribute fewer than five episodes, limiting episode-level
+uncertainty estimates. Reduced post-promotion monitoring can detect a reversal later than the
+incumbent procedure. Equal deployment summaries do not imply equal event-by-event actions.
+The event order of \texttt{openml\_ldpa} is inferred from undocumented columns, and its
+non-stationarity largely reflects changes of recorded subject between blocks. Ablation and
+sensitivity measurements cover only the streams shown in their respective tables.
 
 \section{Conclusion}
-Keeping a sequential certificate valid costs labels, and much of that cost is incurred after the
-deployment decision has already been made. Withholding queries in the states where no label can
-change the deployed action recovers that spend, on four of five real case studies with deployment
-behaviour identical event for event. The result is an efficiency claim, not a better decision
-rule, and we have reported where a simpler procedure still wins.
+Settled-decision acquisition reduces the cost of maintaining a sequential certificate by
+attenuating queries when the deployed action has settled. Across \NStreams{} real datasets,
+it saves \MeanCostChange\% in net cost and uses \MeanSaving\% fewer labels on average
+relative to the incumbent certified procedure; median savings are \MedCostChange\% and
+\MedSaving\%, respectively. Net cost falls on \NCheaper{} datasets. Reduced acquisition can
+also change deployment behaviour and increase total cost, as on \texttt{elec\_MT\_041}, and
+a fixed-sample test remains cheaper on \NSixCheaper{} datasets. The result quantifies how much
+label spending can be recovered while retaining certificate-based promotion and rollback.
 
 \bibliography{references}
-\bibliographystyle{icml2026}
+\bibliographystyle{tmlr}
+
+\appendix
+\section{Per-Stream Cost Decomposition}\label{app:streams}
+{\footnotesize\setlength{\tabcolsep}{3pt}\input{tables/table5_streams}}
 \end{document}

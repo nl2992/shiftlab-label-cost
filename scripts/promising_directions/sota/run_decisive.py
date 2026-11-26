@@ -1,8 +1,6 @@
 """The decisive experiment: economic stopping trigger vs certificate stopping trigger.
 
-Pre-registered in `docs/promising_directions/sota/SOTA_NARROWED_PROTOCOL.md`, including the
-stop/continue rule and the amendment naming `GatedDeploymentStop` as the bar. This script does
-not decide anything; it produces the numbers the pre-registered rule is applied to.
+Compares the economic stopping rule with GatedDeploymentStop on frozen loss streams.
 
 Cached 0/1 loss streams are replayed exactly: with every label set to 0, a model's prediction
 equals its loss, so `pred != label` reproduces the stored loss event for event. No model is
@@ -25,6 +23,7 @@ import numpy as np
 SOTA = Path(__file__).resolve().parent
 sys.path.insert(0, str(SOTA))
 sys.path.insert(0, str(SOTA / "competitors"))
+sys.path.insert(0, str(SOTA.parent))
 
 from certificate_stops import DiscernStyleStop, GatedDeploymentStop
 from economic_stop import EconomicStop
@@ -33,13 +32,9 @@ from simulator import check_budget_feasible, run_episode
 T_EP = 2000
 SEED_BASE = 20261101
 
-SOURCES = {
-    "rialto": Path("docs/promising_directions/results/b3/losses/rialto.npz"),
-    "spam": Path("docs/promising_directions/results/b3/losses/spam.npz"),
-    "weather": Path("docs/promising_directions/results/b3/losses/weather.npz"),
-}
-DELAYS = {"rialto": 100, "spam": 50, "weather": 1, "openml_ldpa": 100, "uci_occupancy": 100}
-POWERED = ("rialto", "openml_ldpa")  # only these can decide, per the protocol
+from real_datasets import DELAYS, STREAMS, LOSSES
+SOURCES = {name: LOSSES / f"{name}.npz" for name in STREAMS}
+POWERED = ("rialto", "openml_ldpa")
 
 
 def load_losses(name: str, extra_root: Path | None) -> np.ndarray:

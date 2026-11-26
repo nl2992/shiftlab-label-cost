@@ -73,7 +73,7 @@ testing, it is a **new question needing its own registration**, not a rescue of 
   directions before any comparison ran on it.
 - The prior-art record, which found that both halves of the previously intended paper were
   already published.
-- `B3_PLUS_*`: settled-decision acquisition still beats **P3b** on five datasets. That result is
+- `B3_PLUS_*`: settled-decision acquisition still beats **P3b** on 19 of the 20 real datasets. That result is
   unaffected. What this experiment shows is that it does **not** beat the published
   certificate-triggered alternative, which is the comparison that matters.
 
@@ -85,7 +85,7 @@ error is worth recording because it is the kind that quietly destroys good work.
 **What this experiment tested**: `EconomicStop` — Gated's own confidence sequence with an
 economic threshold — against two certificate stops, on two datasets, at one configuration.
 
-**What it did not test**: `P7s`, the settled-decision acquisition policy that beats P3b on five
+**What it did not test**: `P7s`, the settled-decision acquisition policy that beats P3b on 19 of the 20 real
 datasets. **P7s has never been run against any of the nine published competitors implemented in
 this programme.** The suite comparison the gate asks for has not been attempted.
 

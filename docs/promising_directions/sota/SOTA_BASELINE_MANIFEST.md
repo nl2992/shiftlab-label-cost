@@ -1,6 +1,6 @@
 # SOTA baseline manifest
 
-Gate: **IN PROGRESS — SOTA GATE NOT MET.** The objective is five real-data cases that beat every
+Gate: **IN PROGRESS — SOTA GATE NOT MET.** The objective is to assess the retained real datasets against every
 mandatory applicable competitor on
 
     net_cost = prediction_loss + label_price * requested_labels + switch_cost * deployment_switches

@@ -1,36 +1,7 @@
-"""P7s against the published competitors, on the five real case-study datasets.
+"""Replay published competitors on the configured real loss streams.
 
-This is the comparison the completion gate actually asks for, and the one that had never been
-run. Everything previously on the record was ours against ours: the five case studies are P7s
-against P3b (both ours), and the decisive run was `EconomicStop` -- a stand-in built on gated
-deployment's own confidence sequence -- against gated deployment. Neither compares the method we
-claim against a method somebody else published.
-
-What this script does instead: it drives **P7s itself**, through the simulator's
-`Policy` interface, over the same event streams as every published competitor, and pairs the
-results on (episode, query seed).
-
-Pairing. For a given (episode, seed) every policy is driven by a generator derived from
-`(SEED_BASE, episode, seed, policy_name)`, so policies cannot consume one another's randomness
-while still facing identical streams. Net cost is the registered one:
-`prediction_loss + c_q * requested_labels + c_s * deployment_switches`.
-
-Replay. Cached 0/1 loss streams are replayed so that `pred != label` reproduces the stored loss
-event for event. No model is retrained and no raw data is touched. There are two ways to do that
-and the difference is not cosmetic:
-
-* `zeros` sets every label to 0, so a model's prediction equals its loss. Simple, but it makes the
-  label marginal degenerate, which could change the behaviour of any competitor that conditions on
-  the predicted class or estimates a class prior.
-* `xor` draws a balanced label stream and sets each model's prediction to `label XOR loss`. The
-  per-model loss sequence is bit-for-bit the same, but the label marginal is realistic.
-
-Both are run. If a competitor's cost differs between them, its adapter depends on the label
-marginal and the `zeros` number is an artefact; `xor` is then the number to use. This is checked
-rather than assumed. The consequence for competitor coverage is recorded in
-`FEATURE_DEPENDENT` below: a method whose acquisition needs development-set features or a fitted
-nuisance model cannot run on a loss-only stream, and is reported as not-run rather than
-approximated by something easier to beat.
+Policies are paired on the same episodes and randomisation seeds. Feature-dependent
+comparators require development data and are recorded as not run when unavailable.
 """
 
 from __future__ import annotations
@@ -63,14 +34,14 @@ from simulator import (
 from smcs import SMCSDeploymentPolicy
 from xu_acquisition import XuAcquisitionPolicy
 
-SEED_BASE = 20261101  # the registered seed base, as in the five case studies
+SEED_BASE = 20261101  # the registered seed base, shared across the retained datasets
 T_EP = 2000
 
-# Registered per-dataset delays (B3_PLUS_PROTOCOL / run_decisive). Overridden by the cache's own
+# Configured per-dataset delays. Overridden by the cache's own
 # `delay` field where it carries one.
-DELAYS = {"rialto": 100, "spam": 50, "weather": 1, "openml_ldpa": 100, "uci_occupancy": 100}
+from real_datasets import DELAYS, STREAMS, LOSSES
 
-PRIMARY = ("spam", "rialto", "weather", "openml_ldpa", "uci_occupancy")
+PRIMARY = STREAMS
 
 # Published methods that CANNOT run on a loss-only replay stream, with the reason. These are not
 # wins and not losses; they are not-run, and saying so is the point of recording them here.
@@ -222,7 +193,7 @@ def paired_ci(diff: np.ndarray, rng, n_boot=4000):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--datasets", default=",".join(PRIMARY))
-    ap.add_argument("--loss-roots", default="docs/promising_directions/results/b3/losses")
+    ap.add_argument("--loss-roots", default=str(LOSSES))
     ap.add_argument("--budget", type=int, default=200)
     ap.add_argument("--cq", type=float, default=0.05)
     ap.add_argument("--cs", type=float, default=5.0)

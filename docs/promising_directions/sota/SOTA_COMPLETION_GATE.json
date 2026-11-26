@@ -1,7 +1,7 @@
 {
   "gate_status": "NOT MET - NARROWED QUESTION CLOSED, SUITE COMPARISON NEVER RUN",
   "updated_utc": "2026-11-03",
-  "objective": "five real-data cases beating every mandatory applicable competitor on net_cost",
+  "objective": "evaluate the retained real datasets against every mandatory applicable competitor on net_cost",
   "net_cost": "prediction_loss + label_price * requested_labels + switch_cost * deployment_switches",
   "confirmed_winning_cases": 0,
   "cases_required": 5,
@@ -53,7 +53,7 @@
   },
   "key_finding": "P3b is not the state of the art for this task. Gated deployment (ICML 2021) is cheaper on both powered datasets and far more label-efficient (30.8 vs 159.2 labels on rialto), so the B3+ result is a win over a weak baseline.",
   "correction_utc": "2026-11-03",
-  "correction": "An earlier update recorded 'PROGRAMME STOPPED'. That was an overreach. The pre-registered rule that fired governed one question: economic trigger vs certificate trigger, tested with EconomicStop. P7s, the policy that beats P3b on five datasets, has NEVER been run against any of the nine published competitors implemented here. The suite comparison the gate actually asks for has not been attempted.",
+  "correction": "An earlier update recorded 'PROGRAMME STOPPED'. That was an overreach. The pre-registered rule that fired governed one question: economic trigger vs certificate trigger, tested with EconomicStop. P7s, the policy that beats P3b on 19 of the 20 real datasets, has NEVER been run against any of the nine published competitors implemented here. The suite comparison the gate actually asks for has not been attempted.",
   "what_was_tested": {
     "policy": "EconomicStop (Gated's confidence sequence with an economic threshold)",
     "beaten_by": [

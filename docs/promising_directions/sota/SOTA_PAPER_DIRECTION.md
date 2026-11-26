@@ -12,7 +12,7 @@ four of them verified against author implementations. The variance-minimisation 
 classes, any posterior, any epsilon.
 
 **2. Settled-decision acquisition (P7s).** A strict efficiency gain on the certified baseline:
-20-67% fewer labels with *bitwise identical* deployment behaviour on four of five real cases.
+Median label savings of 30% across the 20 real datasets, with matching deployment summaries in 275 of 307 episodes.
 Small in net cost (0.2-3.8%), mechanically transparent, and it satisfies an exact scaling law that
 a fitted effect would not.
 

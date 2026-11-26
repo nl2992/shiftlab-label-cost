@@ -37,8 +37,5 @@
     "scikit-learn": "1.9.1",
     "river": "0.26.1"
   },
-  "argv": [
-    "research/b3_plus/dataset_discovery/run_screening_queue.py"
-  ],
   "utc": "2026-11-02T23:39:02.809228+00:00"
 }
