@@ -151,7 +151,7 @@ def write_details():
     lines = [r"\begin{tabular}{lrrrr}", r"\toprule",
              r"& \multicolumn{2}{c}{spam ($K=1$)} & \multicolumn{2}{c}{rialto ($K=16$)} \\",
              r"Variant & Cost & $\Delta$ & Cost & $\Delta$ \\", r"\midrule"]
-    variants = (("P3b", "Incumbent certified switching"), ("P4ref", "Cost-aware promotion"),
+    variants = (("P3b", "Ungated certified switching (P3b)"), ("P4ref", "Cost-aware promotion"),
                 ("P7b", r"Acquisition: \textsc{hopeless} only"),
                 ("P7s", r"Acquisition: both states"))
     eps = {n: records(base / "ablation" / f"{n}__S0__h2000.jsonl") for n in cases}
