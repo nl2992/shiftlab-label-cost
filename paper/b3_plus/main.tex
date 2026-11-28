@@ -25,78 +25,78 @@ Switching under Budgeted and Delayed Feedback}
 
 \begin{abstract}
 Sequential certificates let a challenger replace a deployed model as soon as paired-loss
-evidence suffices, but under a label budget their acquisition rules keep buying labels after the
-decision has settled: on a \texttt{spam} stream, a certified switching procedure promotes the
-challenger at event~244 of 2000 on average and then spends its full 200-label budget. We propose
-\emph{settled-decision acquisition}, which attenuates the paced query rate when the promoted
-challenger remains ahead and, as a pre-promotion safeguard, when an optimistic bound on the
-challenger's advantage indicates that promotion would not recover its switching cost. The construction of the evidence process, the
-promotion threshold and the rollback test are unchanged, and a positive query floor keeps rollback
-monitoring at a minimum rate. On \NStreams{} real datasets (\NEpisodes{} episodes), compared with
-the same procedure without this gating, it uses \MeanSaving\% fewer labels (median \MedSaving\%)
-and lowers net cost on \NCheaper{} of the \NStreams{} datasets; across all \NStreams{} the mean
-net-cost reduction is \MeanCostChange\% (median \MedCostChange\%), small because label spend is
-capped at 10 cost units per episode.
-Deployment loss, switches and rollbacks coincide on every query seed in \NSameEpisodes{} of
-\NEpisodes{} episodes,
-and the episode-bootstrap interval for the cost difference lies below zero on 17 of the 18
-datasets with at least five episodes.
+evidence suffices, but under a label budget a certificate kept alive for rollback keeps buying
+labels after the decision has settled: on a \texttt{spam} stream, a budgeted certified switching
+procedure promotes the challenger at event~244 of 2000 on average and then spends its full
+200-label budget. We propose \emph{settled-decision acquisition}, which attenuates the paced query
+rate when the promoted challenger remains ahead and, as an optional pre-promotion safeguard, when
+an optimistic bound on the challenger's advantage indicates that promotion would not recover its
+switching cost. The construction of the evidence process, the promotion threshold and the rollback
+test are unchanged,
+so the type-I error bound of each certificate is preserved, and a positive query floor keeps
+rollback monitoring at a minimum rate. On \NStreams{} real datasets (\NEpisodes{} episodes),
+compared with the same procedure without the gate, it uses \MeanSaving\% fewer labels (median
+\MedSaving\%), and deployment loss, switches and rollbacks are identical for the two procedures on
+every query seed in \NSameEpisodes{} of \NEpisodes{} episodes. Net cost is lower on \NCheaper{} of
+the \NStreams{} datasets (mean \MeanCostChange\%, median \MedCostChange\%); label spend is at most
+10 of the 104 to 483 cost units per episode. The episode-bootstrap interval for the cost
+difference lies below zero on 17 of the 18 datasets with at least five episodes.
 \end{abstract}
 
 \section{Introduction}
 Under a label budget, a sequential certificate for replacing a deployed model keeps buying labels
 after it has already changed the deployed action. Replacing a model requires purchased labels that
 arrive late, each deployment switch incurs a cost, and the certificate allows promotion as soon as
-enough paired-loss evidence has arrived. In the \texttt{spam} example in Figure~\ref{fig:method}, the certified procedure promotes
-the challenger at event~244 on average over query seeds and then spends its full 200-label budget
+enough paired-loss evidence has arrived. In the \texttt{spam} example in
+Figure~\ref{fig:method}, a budgeted certified switching procedure with rollback promotes the
+challenger at event~244 on average over query seeds and then spends its full 200-label budget
 over the rest of the 2000-event episode. Once the challenger is deployed and remains ahead, those
-labels mainly provide rollback monitoring. Existing certified-update procedures either stop
-querying once the verdict is reached, and so cannot roll back, or monitor a deployed model without a
-label budget. A procedure that keeps its certificate alive for rollback under a budget instead
-spends its remaining labels after the decision, and none of the works in Section~2 prices that
-spend. Cutting it is constrained in three ways: stopping altogether removes rollback, labels arrive
-$d$ events late, and a query rule that reacts to the evidence must not invalidate the test that the
-evidence feeds.
+labels mainly provide rollback monitoring.
 
-We address that acquisition decision with \emph{settled-decision acquisition}. The rule attenuates
-the paced query probability in two states: after promotion, when the recent paired advantage still
-favours the deployed challenger, and before promotion, when even an upper confidence bound on the
-challenger's advantage cannot repay the switching cost. A positive query floor retains monitoring.
-The construction of the evidence process, its propensity-matched bet cap and the promotion and
-rollback tests are unchanged, so the decision rule is the same and decisions differ only where the
-purchased evidence differs. Because the multiplier enters only through a predictable propensity, the
-type-I error of each certificate is unaffected (Proposition~\ref{prop:validity}). Deployment loss,
-switch count and rollback count coincide on every query seed in \NSameEpisodes{} of \NEpisodes{}
-episodes.
+Existing certified-update procedures either stop querying once the verdict is reached, and so
+cannot roll back~\citep{karampatziakis2021offpolicy,balachandran2026discern}, or monitor a
+deployed model without a label budget~\citep{podkopaev2022tracking}. We therefore construct
+\textsf{P3b} (Section~\ref{sec:method}), which keeps its certificate alive for rollback under a
+hard budget; on \texttt{spam} it spends most of its labels after the decision. Lowering its budget
+would not remove that spend selectively, because a smaller budget also slows the pre-promotion
+evidence that drives promotion. Cutting post-promotion spend is constrained in three ways: stopping
+altogether removes rollback, labels arrive $d$ events late, and a query rule that reacts to the
+evidence must not invalidate the test that the evidence feeds.
 
-Across \NStreams{} real datasets, the gate uses \MeanSaving\% fewer labels (median \MedSaving\%)
-than the same procedure without it and lowers net cost on \NCheaper{} of them, by \MeanCostChange\%
-on average (median \MedCostChange\%). Net-cost percentages are small because label spend is a small
-share of net cost: with $c_q=0.05$ and $B=200$ it is at most 10 cost units per episode, against
-ungated costs of 104 to 483. Measured against that ceiling the saving is large: on
-\texttt{metro} the ungated procedure spends the full 10 units and the gate saves 6.78 of them. The episode-bootstrap interval for the
-cost difference lies below zero on 17 of the 18 datasets with at least five episodes.
+We address that acquisition decision with \emph{settled-decision acquisition}, which multiplies
+the paced query probability by an acquisition multiplier $r_t$. The multiplier is zero in a
+post-promotion \textsc{settled} state, when the recent paired advantage still favours the deployed
+challenger, and $0.25$ in an optional pre-promotion \textsc{hopeless} state, when even an upper
+confidence bound on the challenger's advantage cannot repay the switching cost. A positive query
+floor retains monitoring, which answers the first constraint. The multiplier is computed only from
+labels released before each event, so it stays predictable under any fixed delay $d$, and because
+it enters only through that predictable propensity, the type-I error bound of each certificate is
+preserved (Proposition~\ref{prop:validity}). The construction of the evidence process, its
+propensity-matched bet cap
+and the promotion and rollback tests are unchanged, so decisions differ only where the purchased
+evidence differs.
+
+Across \NStreams{} real datasets the gate uses \MeanSaving\% fewer labels than \textsf{P3b}
+(median \MedSaving\%, up to \MaxSaving\%), and deployment loss, switch count and rollback count are
+identical for the two procedures on every query seed in \NSameEpisodes{} of \NEpisodes{} episodes.
+Measured against label spend the saving is large: on \texttt{metro} the ungated procedure spends
+its full 10 cost units of labels and the gate saves 6.78 of them. Net cost is lower on \NCheaper{}
+of the datasets, by \MeanCostChange\% on average (median \MedCostChange\%). Label spend is at
+most 10 of the 104 to 483 cost units per episode.
 
 \paragraph{Contributions.}
 \begin{itemize}
-  \item On \texttt{spam} and \texttt{rialto}, we document that a certified switching procedure
-  under a label budget promotes early (mean events 244 and 425 of 2000) and then keeps querying at
-  its paced rate for the rest of the horizon; on \texttt{spam} most of its 200-label budget is spent
-  after promotion (Section~\ref{sec:method}, Figure~\ref{fig:method}).
-  \item We propose settled-decision acquisition (Section~\ref{sec:method}), which attenuates
-  querying in two states where a label is unlikely to change the deployed action, the
-  post-promotion \textsc{settled} state and a pre-promotion \textsc{hopeless} safeguard, and show
-  that this leaves the type-I error guarantee of each certificate unchanged
-  (Proposition~\ref{prop:validity}). The savings we measure in isolation come from
-  \textsc{settled}.
-  \item We evaluate on \NStreams{} real datasets (Section~\ref{sec:results}), decompose every
-  cost difference into loss, query and switch components, and attribute the saving on two
-  streams to the \textsc{settled} state by ablation. From the decomposition, the gate is cheaper
-  than the ungated procedure on all \NStreams{} datasets once $c_q$ exceeds about $0.067$ at
-  $c_s=5$ and $B=200$ (Section~\ref{sec:ablation}).
+  \item We propose settled-decision acquisition (Section~\ref{sec:method}), a state-dependent
+  multiplier on the paced query rate of a budgeted certified switching procedure with rollback,
+  and show that the type-I error bound of each certificate holds for any predictable multiplier
+  (Proposition~\ref{prop:validity}).
+  \item We evaluate the gate as an ablation of that procedure on \NStreams{} real datasets
+  (Section~\ref{sec:results}), decompose every cost difference into loss, query and switch
+  components, and show that on \texttt{spam} and \texttt{rialto} the saving is entirely due to
+  the \textsc{settled} state (Section~\ref{sec:ablation}).
 \end{itemize}
 
-\section{Related Work}
+\section{Related Work}\label{sec:related}
 \paragraph{Anytime-valid testing.} Our certificates are e-processes built by testing by
 betting~\citep{shafer2021testing,vovk2021evalues,ramdas2023gametheoretic}, and the
 $\log(1/\alpha)$ threshold is justified by Ville's inequality~\citep{ville1939etude}. Paired-loss
@@ -106,37 +106,43 @@ by~\citet{howard2021timeuniform}. Our bet is a conservative variant of the aGRAP
 of~\citet{waudbysmith2024betting}, and importance weighting with predictable propensities follows
 anytime-valid off-policy inference~\citep{waudbysmith2024anytime}.
 
-Always-valid A/B
-testing~\citep{johari2022always} monitors a comparison continuously, and
-e-detectors~\citep{shin2023edetectors} detect changes sequentially, the role rollback plays here.
-Choosing which observation to buy for a sequential test goes back to the sequential design of
-experiments~\citep{chernoff1959sequential}.
+Rollback is a sequential monitoring problem. Always-valid A/B testing~\citep{johari2022always}
+monitors a comparison continuously, and e-detectors~\citep{shin2023edetectors} detect changes
+sequentially; rollback plays this role in our setting. Choosing which observation to buy for a
+sequential test goes back to the sequential design of experiments~\citep{chernoff1959sequential},
+and active sequential two-sample testing~\citep{li2023active} actively queries costly labels for
+a test with an anytime-valid $p$-value, without a committed deployment or rollback.
 
 \paragraph{Certified model updates and deployment.} Certified update methods either stop buying
-labels once a certificate has fired or monitor a deployed model without a label budget. Gated deployment~\citep{karampatziakis2021offpolicy} replaces a
-deployed policy once an off-policy confidence sequence for the improvement excludes zero.
-DISCERN~\citep{balachandran2026discern} queries only disagreement events, importance-weights them
-inside an anytime-valid test, and stops when a no-regression verdict is reached.
-\citet{podkopaev2022tracking} monitor the risk of a deployed model sequentially to detect harmful
-shifts. None of these works treats a hard per-episode label budget, label delay and a switching cost
-together, and neither gated deployment nor DISCERN keeps a certificate alive after promotion for rollback; that
-post-promotion spend is what our method prices.
+labels once a certificate has fired or monitor a deployed model without a label budget. Gated
+deployment~\citep{karampatziakis2021offpolicy} replaces a deployed policy once an off-policy
+confidence sequence for the improvement excludes zero. DISCERN~\citep{balachandran2026discern}
+queries only disagreement events, importance-weights them inside an anytime-valid test, and stops
+when a no-regression verdict is reached; its guarantee composes across a sequence of promotions
+from one error budget, whereas our certificates restart at each switch and are bounded per segment
+(Section~\ref{sec:limits}). \citet{podkopaev2022tracking} monitor the risk of a deployed model
+sequentially to detect harmful shifts. None of these works treats a hard per-episode label budget,
+label delay and a switching cost together, and neither gated deployment nor DISCERN keeps a
+certificate alive after promotion for rollback; our method reduces that post-promotion spend.
 
 \paragraph{Label-efficient model comparison.} \citet{sawade2012active} actively select test
 points to compare prediction models with few labels, and Model Picker~\citep{karimi2021online}
-queries labels online to identify the best pre-trained classifier. Active testing~\citep{kossen2021active} and active statistical
-inference~\citep{zrnic2024active} choose which labels to buy to estimate model performance
-efficiently.
+queries labels online to identify the best pre-trained classifier. Active
+testing~\citep{kossen2021active} and active statistical inference~\citep{zrnic2024active} choose
+which labels to buy to estimate model performance efficiently. These methods estimate or select
+rather than commit to a deployed model whose switches carry a cost. Label-efficient
+prediction~\citep{cesabianchi2005minimizing} and bandits with switching
+costs~\citep{dekel2014bandits} study label budgets and switching costs in regret terms rather than
+with certificates.
 
-Contextual active model selection~\citep{liu2024cams} queries on a disagreement score
-and optimises regret under a hard label budget, but has no switching cost, delay or committed
+Contextual active model selection~\citep{liu2024cams} queries on a disagreement score and
+optimises regret under a hard label budget, but has no switching cost, delay or committed
 deployment, and hence no promotion. Active, anytime-valid risk-controlling prediction
 sets~\citep{xu2024active} treat budgeted, e-process-driven labelling: the policy maximises a lower
 bound on e-process log-growth, driven by conditional risk variability rather than proximity to a
-decision boundary, under a label budget that holds in expectation; it assumes labels are
-available immediately and does not consider switching between candidate models. Our acquisition
-rule is the opposite of that objective: it declines to buy evidence once the
-evidence cannot change the action.
+decision boundary. Their label budget holds in expectation, labels are assumed to arrive
+immediately, and there is no switching between candidate models. Our acquisition rule differs
+from that objective: it declines to buy labels once further labels cannot change the action.
 
 \section{Problem Formulation}
 An episode is a chronological stream of events $t=1,\dots,T$. A frozen incumbent $f_0$ and
@@ -149,6 +155,8 @@ switches, the realised net cost is
 \begin{equation}\label{eq:netcost}
   C_\pi=\sum_{t=1}^{T}\ell_{a_t}[t]+c_qN_q+c_sN_s .
 \end{equation}
+We hold the promotion and rollback tests fixed, so that each certificate has type-I error at most
+$\alpha$, and design only the acquisition rule to reduce the expected net cost over query seeds.
 Each event proceeds in three stages. \textbf{Issue}: choose a query probability (propensity) $q_t$
 and freeze a betting fraction $\lambda_t$, both computed from labels released before event $t$,
 that is, labels of events up to $t-d-1$. The label is requested, $Q_t=1$, when $D_t=1$,
@@ -169,6 +177,9 @@ multipliers; the positive propensity floor applies in all states.}
 \end{figure}
 
 \section{Method}\label{sec:method}
+We first state the budgeted certified switching procedure \textsf{P3b}, then show where its budget
+goes, introduce the gate, and show that the error bound is preserved.
+
 \paragraph{Certified switching.} Let $a$ be the deployed model and $\Delta_s=\ell_a[s]-\ell_{1-a}[s]$
 the paired advantage of the other model at event $s$. A released label contributes the
 importance-weighted increment $x_s=Q_s\Delta_s/q_s$ to the wealth $W_t=\prod_{s}(1+\lambda_s x_s)$,
@@ -192,12 +203,13 @@ where $\mathrm{rem}_t$ is the unspent budget and $\widehat{\text{rate}}_t$ is th
 estimated with a prior rate of $0.25$ worth 20 events. \textsf{P3b}, the ungated procedure, uses
 $r_t\equiv1$.
 
-\paragraph{Where the budget goes.} Under \textsf{P3b}, mean promotion time is event $244$ on
+\paragraph{Where the budget goes.} In the configuration of Section~\ref{sec:setup}, under
+\textsf{P3b} mean promotion time is event $244$ on
 \texttt{spam} (over 100 query seeds) and event $425$ on \texttt{rialto} (mean of its 16 episode
 means; median $352$). On both streams every query seed of every episode promotes, after which querying continues at the
 paced rate for most of the remaining horizon.
 
-\paragraph{Settled-decision acquisition.} Settled-decision acquisition changes only $r_t$. Let
+\paragraph{Settled-decision acquisition.} The gate changes only $r_t$. Let
 $A_t$ be the recent discounted paired advantage, an exponential average ($\gamma_A=0.97$) of the
 released increments of the current segment, so $A_t<0$ means the deployed model has recently been
 ahead. While the incumbent is deployed, we run mirrored e-processes on a grid of margins
@@ -207,7 +219,11 @@ tested at $\log(10/\alpha)$; the upper bound $\mathrm{UCB}_t$ is the smallest re
 \textsc{settled}, when the challenger is deployed and $A_t<0$; and \textsc{hopeless}, when the
 incumbent is deployed, $A_t<0$ and $\mathrm{UCB}_t\,(T-t+1)<c_s$, so that even if the advantage
 stayed at its upper bound for the rest of the horizon, promotion would not repay its switching
-cost. The bound is a heuristic signal for acquisition; validity does not depend on it. Then
+cost. With margins in steps of $0.01$ and $c_s=5$, this condition can hold more than 500 events
+before the horizon only when the margin-0 null is rejected, that is, when the challenger has itself
+been certified no better than the incumbent; \textsc{hopeless} therefore fires early only when
+promotion is already implausible. The bound is a heuristic signal for acquisition; validity does
+not depend on it. Then
 \begin{equation}\label{eq:rule}
   r_t=\begin{cases}
     0 & \textsc{settled}\\
@@ -220,8 +236,9 @@ multiplier of $0$ still queries at $p_{\min}$ because $q_t$ is clipped there, so
 monitoring continues; when $A_t$ turns non-negative, a reversal signal, the full paced rate
 returns. In \textsc{settled}, a disagreement rate $\rho$ gives $p_{\min}\rho$ labels per event in
 expectation, so after a reversal the first label arrives after about $1/(p_{\min}\rho)$ events,
-80 for $\rho=0.25$, and becomes usable $d$ events later. This is the minimum delay that reduced
-monitoring adds before the full rate can return; one label need not turn $A_t$ non-negative.
+80 for $\rho=0.25$, and becomes usable $d$ events later. This expected waiting time is a lower
+bound on the extra delay that reduced monitoring adds before the full rate can return, since one
+label need not turn $A_t$ non-negative.
 
 \begin{algorithm}[t]
 \caption{Settled-decision acquisition (one event)}
@@ -246,8 +263,7 @@ null $H_0$, $\mathbb{E}[\Delta_s\mid\mathcal{G}_{s-1}]\le0$ for every event $s\g
 $u_s$ is independent of $\mathcal{G}_{s-1}$ and of the losses at $s$. If $q_s$, $\lambda_s$ and
 $r_s$ are $\mathcal{G}_{s-1}$-measurable, $q_s>0$ whenever a label may be requested and
 $0\le\lambda_s\le q_s/2$, then $\Pr_{H_0}\bigl(\exists t:\log W_t\ge\log(1/\alpha)\bigr)\le\alpha$.
-In particular the acquisition multiplier $r_t$ does not affect the type-I error of the
-certificate.
+In particular, the bound holds for every predictable choice of the acquisition multiplier $r_t$.
 \end{proposition}
 
 \begin{proof}
@@ -266,8 +282,11 @@ $\Delta_s\le0$ for every event of the segment; the replay therefore measures cos
 type-I guarantee concerns the stochastic-loss model of the proposition. The floor $p_{\min}$ is not needed for validity; it
 keeps the test able to accumulate evidence and keeps rollback monitoring active.
 
-\section{Experimental Setup}
-The evaluation contains \NStreams{} real datasets, each giving one loss stream, and \NEpisodes{}
+\section{Experimental Setup}\label{sec:setup}
+The experiments ask how many labels and how much net cost the gate saves relative to \textsf{P3b}
+(Section~\ref{sec:results}), where the saving comes from (Sections~\ref{sec:results}
+and~\ref{sec:ablation}), and how it depends on $c_q$, $c_s$, $B$ and $d$
+(Section~\ref{sec:ablation}). The evaluation contains \NStreams{} real datasets, each giving one loss stream, and \NEpisodes{}
 episodes: nine electricity meters from the UCI electricity load diagrams~\citep{trindade2015electricity},
 five Beijing air-quality stations~\citep{zhang2017cautionary} and the Italian air-quality CO
 series~\citep{devito2008field}, two demand and mobility series (\texttt{metro}~\citep{hogue2019metro}
@@ -315,19 +334,20 @@ switch count and rollback count agree on every query seed.
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{figures/fig4_all_streams.pdf}
-\caption{Settled-decision acquisition saves \MeanCostChange\% in net cost and
-\MeanSaving\% in labels on average across \NStreams{} datasets. Bars show the arithmetic
-mean and median of dataset-level percentage reductions relative to \textsf{P3b}; hollow points
-show all dataset values. The median savings are \MedCostChange\% and \MedSaving\%, respectively.}
+\caption{Settled-decision acquisition saves \MeanSaving\% of labels and \MeanCostChange\% of net
+cost on average across \NStreams{} datasets. Bars show the arithmetic mean and median of
+dataset-level percentage reductions relative to \textsf{P3b} for net cost (a) and labels (b);
+hollow points show all dataset values. The median savings are \MedSaving\% for labels and
+\MedCostChange\% for net cost.}
 \label{fig:all}
 \end{figure}
 
 Figure~\ref{fig:all} reports the headline result: averaged equally across \NStreams{} datasets,
 settled-decision acquisition uses \MeanSaving\% fewer labels than \textsf{P3b} (median
-\MedSaving\%) and saves \MeanCostChange\% in net cost (median \MedCostChange\%). Net cost is lower
-on \NCheaper{} datasets and higher on \NDearer{}; label savings reach \MaxSaving\%. Deployment
-summaries match in \NSameEpisodes{} of \NEpisodes{} episodes and in all episodes of
-\NSameStreams{} streams.
+\MedSaving\%, up to \MaxSaving\%), and deployment summaries match in \NSameEpisodes{} of
+\NEpisodes{} episodes and in all episodes of \NSameStreams{} streams. Net cost is lower on
+\NCheaper{} datasets and higher on \NDearer{}, by \MeanCostChange\% on average (median
+\MedCostChange\%).
 
 \begin{table}[!t]\centering\footnotesize\setlength{\tabcolsep}{4pt}
 \caption{Primary results for every real dataset. Net cost and labels are means per episode.
@@ -365,9 +385,11 @@ mean and median, respectively.}
 difference. The gate never increases switching cost: the switch-cost difference is zero or
 negative on every stream. On 10 streams the whole saving is query cost. On the other 10 the gate
 buys less evidence and switches less often: switch cost falls on all 10, and deployment loss falls
-on 7 (for example \texttt{air\_Tiantan}, $-1.36$ against a query saving of $-1.76$). On the other
-3 (\texttt{air\_Dongsi}, \texttt{air\_Shunyi} and \texttt{elec\_MT\_041}) loss rises, which is
-consistent with slower reversal detection under floor-rate monitoring (Section~\ref{sec:method}).
+on 7 (for example \texttt{air\_Tiantan}, $-1.36$ against a query difference of $-1.76$),
+consistent with some of the ungated procedure's extra labels triggering switches that did not pay
+off. On the remaining 3 (\texttt{air\_Dongsi}, \texttt{air\_Shunyi} and \texttt{elec\_MT\_041})
+loss rises, consistent with either slower reversal detection under floor-rate monitoring
+(Section~\ref{sec:method}) or \textsc{hopeless} delaying a promotion.
 On \texttt{elec\_MT\_041} the loss increase ($+1.18$) outweighs the query ($-0.65$) and switch
 ($-0.31$) savings, so net cost rises by 0.09\%. Separately, never switching (212.20) is cheaper
 than both certified procedures (228.61 and 228.83) on that stream, and more expensive than both on
@@ -381,10 +403,11 @@ where \textsf{P6} has lower mean cost than ours.}
 \input{tables/table4_families}
 \end{table}
 
-Table~\ref{tab:families} breaks the result down by source family. \textsf{P6} is cheaper than ours on \NSixCheaper{} streams. It pursues
-a different goal: it buys a single fixed-sample test and never rolls back, so it stops querying once its
-50-label test has run and keeps no monitoring. It can be cheaper where an early one-shot decision
-suffices and the monitoring that both certified procedures retain is not needed.
+Table~\ref{tab:families} breaks the result down by source family. \textsf{P6} is cheaper than ours
+on \NSixCheaper{} streams. It differs from both certified procedures in its test and in its
+monitoring: it runs one fixed-sample test on 50 labels and never rolls back. The comparison with
+the certified procedures therefore concerns deployments that require rollback, which \textsf{P6}
+does not provide.
 
 \section{Mechanism and Ablations}\label{sec:ablation}
 \begin{table}[!t]\centering\small
@@ -394,12 +417,13 @@ the paired cost difference against \textsf{P3b}.}
 \input{tables/table3_ablation}
 \end{table}
 
-On \texttt{spam} and \texttt{rialto} both streams promote early, so the \textsc{hopeless} state
-is not exercised: the \textsc{hopeless}-only variant leaves cost unchanged, and the saving of the
-full rule comes from the \textsc{settled} state (Table~\ref{tab:ablation}). There, deployment loss, switches and rollbacks match, so the cost
-difference is entirely query cost. Gating promotion instead of acquisition, as cost-aware
-promotion does, delays a decision that pays off and costs $+127.87$ and $+106.29$, whereas gating
-acquisition leaves the decision intact.
+This section isolates which state produces the saving, compares gating acquisition with gating
+promotion, and varies $B$, $c_s$, $d$ and $c_q$. Both \texttt{spam} and \texttt{rialto} promote
+early, so the \textsc{hopeless}-only variant leaves cost unchanged and the saving on these streams
+is entirely due to the \textsc{settled} state (Table~\ref{tab:ablation}). Deployment loss,
+switches and rollbacks match there, so the cost difference is entirely query cost. Cost-aware
+promotion with a declared horizon of 150 events delays a promotion that pays off and costs
+$+127.87$ and $+106.29$ on these streams, whereas gating acquisition leaves the decision intact.
 
 \begin{table}[!htb]\centering\small
 \caption{Sensitivity of the paired cost difference (ours minus \textsf{P3b}) on \texttt{spam},
@@ -410,33 +434,36 @@ configuration not evaluated.}
 \end{table}
 
 \paragraph{Sensitivity.}
-Neither policy reads $c_q$, and on \texttt{spam} and \texttt{rialto}, where \textsc{hopeless} does
-not fire and deployment is identical, neither reads $c_s$. By Eq.~\eqref{eq:netcost} the S2 and S4
-entries there therefore follow from Appendix~\ref{app:streams}: the difference is unchanged at $c_s=20$
-and exactly doubles at $c_q=0.10$ (Table~\ref{tab:sens}). These columns confirm the cost accounting
-rather than test the method. On \texttt{openml\_ldpa} the gate also lowers deployment loss
+Neither policy uses $c_q$, and only \textsc{hopeless} uses $c_s$. On \texttt{spam} and
+\texttt{rialto} deployment is identical, and the unchanged S2 entries show that \textsc{hopeless}
+does not change the outcome at $c_s=20$ either, although at $c_s=20$ a bound of $0.01$ would
+satisfy its condition from the second event on. By Eq.~\eqref{eq:netcost} the difference there then
+doubles exactly at $c_q=0.10$ (Table~\ref{tab:sens}). On \texttt{openml\_ldpa} the gate also lowers deployment loss
 ($-0.82$) and switch cost ($-0.30$, Appendix~\ref{app:streams}), and the $c_s=20$ and $c_q=0.10$
 entries match that decomposition ($-0.82-3.30+4(-0.30)\approx-5.3$ and
 $-0.82+2(-3.30)-0.30\approx-7.7$), so the saving there combines label spend with a deployment
 change.
 
-Because deployment does not depend on $c_q$, each stream's cost difference at fixed $c_s$ and $B$
+Since neither policy uses $c_q$, deployment does not depend on it, and each stream's cost difference at fixed $c_s$ and $B$
 is $\Delta_{\text{loss}}+\Delta_{\text{switch}}+(c_q/0.05)\,\Delta_{\text{query}}$ in the terms of
 Appendix~\ref{app:streams}. Only \texttt{elec\_MT\_041} has a positive
 $\Delta_{\text{loss}}+\Delta_{\text{switch}}$ ($+0.87$) against a query saving of $0.65$, so it
 breaks even at $c_q\approx0.067$. At $c_s=5$ and $B=200$ the gate is therefore cheaper than
 \textsf{P3b} on all \NStreams{} datasets for any $c_q$ above that value.
 
-Doubling the label delay reduces the saving to $-6.18$ on \texttt{spam} and $-4.14$ on
-\texttt{rialto}. The benefit depends on unspent budget that \textsf{P3b} would
-otherwise consume. Raising $B$ to $400$ increases the gain on \texttt{spam} and
+Doubling the label delay changes the cost difference to $-6.18$ on \texttt{spam} and $-4.14$ on
+\texttt{rialto}, consistent with a longer delay leaving fewer post-promotion events in which
+\textsc{settled} withholds queries. The benefit depends on unspent budget that \textsf{P3b} would
+otherwise consume: raising $B$ to $400$ increases the gain on \texttt{spam} and
 \texttt{openml\_ldpa}, but leaves \texttt{rialto} essentially unchanged: its disagreement rate caps
 queries near $165$, so the larger budget does not bind.
 
-\section{Limitations}
+\section{Limitations}\label{sec:limits}
 Streams within a family are correlated, so stream counts are descriptive rather than independent
-trials. \NLowPower{} streams contribute fewer than five episodes, limiting episode-level
-uncertainty estimates. Reduced post-promotion monitoring rests on the floor-rate queries and
+trials. Episodes of one stream are windows of the same series and may be temporally dependent, so
+the episode bootstrap may understate uncertainty; of the streams, \NLowPower{} contribute fewer
+than five episodes and have no interval. The gate's settings ($\gamma_A$, the \textsc{hopeless} multiplier, the margin
+grid and $p_{\min}$) are not varied. Reduced post-promotion monitoring rests on the floor-rate queries and
 can detect a reversal later than \textsf{P3b}. The contribution of the \textsc{hopeless} state is
 not isolated: the ablation streams promote early, and on the remaining streams its effect is not
 separated from that of the \textsc{settled} state. Proposition~\ref{prop:validity} controls the error of each certificate segment; it
